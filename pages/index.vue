@@ -147,13 +147,14 @@
 </template>
 
 <script>
-import buildUrl from "build-url";
 import storePackages from "./storepackages";
+import _ from "lodash";
 import * as utmConfig from "./utmconfig";
 import {
   getUniversalLink,
   getAndroidLink,
-  getClickTrackerLink
+  getClickTrackerLink,
+  buildUrl
 } from "./urlhelpers";
 
 export default {
@@ -250,10 +251,9 @@ export default {
       let link;
       // APP LINKS
       if (["home", "library"].includes(this.linkType)) {
-        const weblink = buildUrl("https://www.7mind.de", {
-          queryParams: this.tracking
-        });
-        const { adjust } = utmConfig.utm_sources_with_adjust.find(
+        const weblink = buildUrl("https://www.7mind.de", this.tracking);
+        const { adjust } = _.find(
+          utmConfig.utm_sources_with_adjust,
           o => o.utm == this.tracking.utm_source
         );
         let deeplink = "home";
@@ -268,27 +268,22 @@ export default {
 
         // WEB STORE
       } else if (this.linkType == "store") {
-        const queryParams = { ...this.tracking, uid: this.storeUserIdentifier };
-        if (this.storeCoupon) queryParams.coupon = this.storeCoupon;
-        link = buildUrl("http://store.7mind.de", {
-          hash: "/buy/" + this.storePackage,
-          queryParams
+        link = buildUrl("http://store.7mind.de/#buy/" + this.storePackage, {
+          ...this.tracking,
+          uid: this.storeUserIdentifier,
+          coupon: this.storeCoupon
         });
 
         // COUPON PAGE
       } else if (this.linkType == "coupon") {
         link = buildUrl("https://www.7mind.de/coupon", {
-          queryParams: {
-            ...this.tracking,
-            code: this.couponCode
-          }
+          ...this.tracking,
+          code: this.couponCode
         });
 
         // WEB LANDING PAGE
       } else if (this.linkType == "landing") {
-        link = buildUrl("https://www.7mind.de", {
-          queryParams: this.tracking
-        });
+        link = buildUrl("https://www.7mind.de", this.tracking);
       }
 
       return this.useClickTracker ? getClickTrackerLink(link) : link;

@@ -1,3 +1,6 @@
+import _ from "lodash";
+import build from "build-url";
+
 export const getUniversalLink = (tracker, deeplink, androidLink, webLink) => {
   return `https://${tracker}.adj.st/${deeplink}?adjust_deeplink=${androidLink}&fallback=${webLink}`;
 };
@@ -12,3 +15,6 @@ export const getClickTrackerLink = universalOrWebLink => {
 
   return `https://tracking.7mind.de/redirect?uri=${javaScriptUniversalLink}`;
 };
+
+export const buildUrl = (url, params) =>
+  build(url, { queryParams: _.pickBy(params) });
