@@ -1,0 +1,22 @@
+{
+  "name": "linkbuilder2",
+  "version": "1.0.0",
+  "description": "My splendid Nuxt.js project",
+  "author": "Martin Duveborg",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "build-url": "^2.0.0",
+    "nuxt": "^2.0.0",
+    "vue-clipboard2": "^0.3.1"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.0.0"
+  }
+}
