@@ -16,5 +16,8 @@ export const getClickTrackerLink = universalOrWebLink => {
   return `https://tracking.7mind.de/redirect?uri=${javaScriptUniversalLink}`;
 };
 
-export const buildUrl = (url, params) =>
-  build(url, { queryParams: _.pickBy(params) });
+export const buildUrl = (url, params) => {
+  const queryParams = _.pickBy(params);
+  return _.isEmpty(queryParams) ? url : build(url, { queryParams });
+}
+

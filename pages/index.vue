@@ -4,13 +4,13 @@
       <v-form v-model="valid">
         <v-card class="mb-5">
           <v-card-title>
-            Lets build a link!
+            Lets build a 7mind link!
           </v-card-title>
           <v-card-text>
             <v-select
               v-model="linkType"
               :items="linkTypes"
-              label="Select the link target"
+              label="Where do you want to link?"
               :rules="required"
             ></v-select>
           </v-card-text>
@@ -129,7 +129,7 @@
           </v-card>
         </div>
       </v-form>
-      <v-card class="mb-5">
+      <v-card v-if="linkType" class="mb-5">
         <v-card-title>
           Link:
         </v-card-title>
@@ -183,11 +183,11 @@ export default {
       linkType: null,
       linkTypes: [
         {
-          text: "Device independant home link",
+          text: "Device independent home link",
           value: "home"
         },
         {
-          text: "Device independant library link ",
+          text: "Device independent library link ",
           value: "library"
         },
         {
@@ -199,7 +199,7 @@ export default {
           value: "coupon"
         },
         {
-          text: "Website start page",
+          text: "Website landing page",
           value: "landing"
         }
       ],
@@ -252,10 +252,9 @@ export default {
       // APP LINKS
       if (["home", "library"].includes(this.linkType)) {
         const weblink = buildUrl("https://www.7mind.de", this.tracking);
-        const { adjust } = _.find(
-          utmConfig.utm_sources_with_adjust,
-          o => o.utm == this.tracking.utm_source
-        );
+        const { adjust = {} } = _.find(utmConfig.utm_sources_with_adjust, {
+          utm: this.tracking.utm_source
+        });
         let deeplink = "home";
         if (this.linkType == "library") {
           deeplink =
@@ -266,7 +265,7 @@ export default {
         const android = getAndroidLink(deeplink, adjust);
         link = getUniversalLink(adjust, deeplink, android, weblink);
 
-        // WEB STORE
+      // WEB STORE
       } else if (this.linkType == "store") {
         link = buildUrl("http://store.7mind.de/#buy/" + this.storePackage, {
           ...this.tracking,
@@ -274,16 +273,16 @@ export default {
           coupon: this.storeCoupon
         });
 
-        // COUPON PAGE
+      // COUPON PAGE
       } else if (this.linkType == "coupon") {
         link = buildUrl("https://www.7mind.de/coupon", {
           ...this.tracking,
           code: this.couponCode
         });
 
-        // WEB LANDING PAGE
+      // WEB LANDING PAGE
       } else if (this.linkType == "landing") {
-        link = buildUrl("https://www.7mind.de", this.tracking);
+        link = buildUrl("https://www.7mind.de/barmer", this.tracking);
       }
 
       return this.useClickTracker ? getClickTrackerLink(link) : link;

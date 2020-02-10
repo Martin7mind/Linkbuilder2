@@ -10,13 +10,15 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "build:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt build",
-    "generate:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt generate"
+    "generate:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt generate",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "build-url": "^2.0.0",
     "lodash": "^4.17.15",
     "nuxt": "^2.0.0",
+    "push-dir": "^0.4.1",
     "vue-clipboard2": "^0.3.1"
   },
   "devDependencies": {
